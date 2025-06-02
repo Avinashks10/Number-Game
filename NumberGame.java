@@ -31,23 +31,47 @@ class Game{
 }    
 public class NumberGame {
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        boolean playAgain = true;
+        int totalScore = 0;
+        int roundsWon = 0;
+        int roundNumber = 0;
+
+        while (playAgain) {
+            roundNumber++;
         Game g=new Game();
-            boolean b=false;
+            boolean isGuessed = false;
             int attempts = 0;
             int maxChances = 10;
 
-            while(!b && attempts < maxChances) {
+            System.out.println("\nRound " + roundNumber + ": Guess the number between 0 and 100.");
+
+            while(!isGuessed && attempts < maxChances) {
                 System.out.println("Chance " + (attempts + 1) + " of " + maxChances);
                 g.takeUserInput();
-                b = g.isCorrectNumber();
+                isGuessed = g.isCorrectNumber();
                 attempts++;
             }
-                if (b) {
-                    System.out.println("You Won in " + attempts + " attempts!");
+                if (isGuessed) {
+                    roundsWon++;
+                    int roundScore = 10;
+                    if (attempts <= 5) {
+                        roundScore += 5;
+                    }
+                    totalScore += roundScore;
+                    System.out.println("You Won in " + attempts + " attempts! ");
+                    System.out.println("Round Score: " + roundScore);
                 } else {
-                    System.out.println("Sorry!You Failed. The correct number was: " + g.Computer_input);
+                    System.out.println("Sorry! You Failed. The correct number was: " + g.Computer_input);
                 }
-        
-        System.out.println("Game Over.Thank you for playing the game.");
+                System.out.print("Do you want to play another round? (yes/no): ");
+                String response = sc.nextLine().toLowerCase();
+                playAgain = response.equals("yes") || response.equals("y");
+            }
+            System.out.println("\nGame Summary:");
+            System.out.println("Rounds Won: " + roundsWon);
+            System.out.println("Total Score: " + totalScore);
+            System.out.println("Thank you for playing!");
+            sc.close();
     }
 }
